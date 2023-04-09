@@ -19,17 +19,6 @@ BitcoinExchange::~BitcoinExchange() {
     }
 }
 
-BitcoinExchange::BitcoinExchange(BitcoinExchange const &other) {
-    *this = other;
-}
-
-BitcoinExchange &BitcoinExchange::operator=(BitcoinExchange const &other) {
-    if (this != &other) {
-        _prices = other._prices;
-    }
-    return *this;
-}
-
 double BitcoinExchange::stringToDouble(const std::string& str) {
     std::istringstream iss(str);
     double value;
