@@ -17,9 +17,18 @@ BitcoinExchange::~BitcoinExchange() {
 }
 
 double BitcoinExchange::stringToDouble(const std::string& str) {
-    std::istringstream iss(str);
+    // replace comma with dot
+    std::string modified_input(str);
+    for (std::string::size_type i = 0; i < modified_input.size(); ++i) {
+        if (modified_input[i] == ',') {
+            modified_input[i] = '.';
+        }
+    }
+
+    std::istringstream iss(modified_input);
     double value;
     iss >> value;
+
     return value;
 }
 
@@ -28,7 +37,7 @@ bool BitcoinExchange::isDouble(const std::string& str) {
     if (*it == '-') ++it;
     while (it != str.end() && std::isdigit(*it)) ++it;
     if (it == str.end()) return true;
-    if (*it == '.') {
+    if (*it == '.' || *it == ',') {
         ++it;
         while (it != str.end() && std::isdigit(*it)) ++it;
         return !str.empty() && it == str.end();
@@ -92,6 +101,9 @@ BitcoinExchange::ValueError BitcoinExchange::IsValidValue(std::string const &val
 
 void BitcoinExchange::parsecsv(std::string const &filename) {
     std::ifstream csv_file(filename);
+    if (!csv_file.is_open()) {
+        throw std::runtime_error("Error: could not open csv file or file doesn't exist.");
+    }
     std::string line;
     getline(csv_file, line);
     while (getline(csv_file, line)) {
