@@ -1,16 +1,13 @@
 #include "BitcoinExchange.hpp"
 
 BitcoinExchange::BitcoinExchange() {
-    std::cout << "Error: could not open file." << std::endl;
-    std::exit(1);
+    throw std::runtime_error("Error: could not open file.");
 }
 
 BitcoinExchange::BitcoinExchange(std::string const &filename) {
     _file.open(filename);
-    if (!_file.is_open()) {
-        std::cout << "Error: could not open file." << std::endl;
-        std::exit(1);
-    }
+    if (!_file.is_open())
+        throw std::runtime_error("Error: could not open file.");
 }
 
 BitcoinExchange::~BitcoinExchange() {
